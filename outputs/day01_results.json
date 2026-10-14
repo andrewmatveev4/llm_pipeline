@@ -1,0 +1,41 @@
+[
+  {
+    "name": "01_laptop",
+    "input": "Мой ноутбук стал медленно работать после обновления системы. Браузер грузится по минуте, вентилятор шумит. Что делать?",
+    "output": {
+      "summary": "После обновления системы ноутбук стал медленно работать, браузер долго загружается, и вентилятор шумит.",
+      "key_points": [
+        "Ноутбук работает медленно после обновления системы.",
+        "Браузер загружается около минуты.",
+        "Вентилятор ноутбука сильно шумит."
+      ],
+      "response": "Попробуйте перезагрузить ноутбук и проверить наличие фоновых процессов, которые могут нагружать систему. Также стоит проверить обновления драйверов и провести антивирусную проверку. Если проблема сохраняется, возможно, стоит обратиться в сервисный центр для диагностики вентилятора."
+    }
+  },
+  {
+    "name": "02_news",
+    "input": "Центробанк сохранил ключевую ставку на прежнем уровне. Регулятор отметил, что инфляция замедляется, но остаётся выше цели. Аналитики ожидают снижения ставки не раньше следующего квартала.",
+    "output": {
+      "summary": "Центробанк оставил ключевую ставку без изменений, отмечая замедление инфляции, которая всё ещё превышает целевой уровень.",
+      "key_points": [
+        "Центробанк сохранил ключевую ставку на прежнем уровне.",
+        "Инфляция замедляется, но остаётся выше цели.",
+        "Аналитики прогнозируют снижение ставки не раньше следующего квартала."
+      ],
+      "response": "Спасибо за информацию. Если вас интересуют прогнозы по ставкам или влияние на экономику, могу помочь с дополнительным анализом."
+    }
+  },
+  {
+    "name": "03_request",
+    "input": "Hi team, I need to prepare a short presentation about our Q3 results for Friday. I have the numbers but no idea how to structure the slides. Any tips?",
+    "output": {
+      "summary": "The user needs help structuring a short presentation about Q3 results for Friday.",
+      "key_points": [
+        "Prepare a short presentation about Q3 results.",
+        "Presentation deadline is Friday.",
+        "User has the data but needs help with slide structure."
+      ],
+      "response": "To structure your Q3 results presentation, start with a brief introduction outlining the agenda. Follow with key performance highlights, supported by charts or graphs, then discuss any challenges or insights. Conclude with next steps or recommendations to keep it clear and impactful."
+    }
+  }
+]

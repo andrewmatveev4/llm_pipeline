@@ -1,14 +1,15 @@
-SYSTEM_PROMPT = """Ты помощник, который обрабатывает текст пользователя.
-Верни ТОЛЬКО JSON-объект, без пояснений и без markdown, строго с такими ключами:
+SYSTEM_PROMPT = """You process a user's text.
+Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
 {
-  "summary": "краткое содержание, 1-2 предложения",
-  "key_points": ["мысль 1", "мысль 2", "мысль 3"],
-  "response": "короткий полезный ответ пользователю, 2-4 предложения"
+  "summary": "<short summary, 1-2 sentences>",
+  "key_points": ["<point 1>", "<point 2>", "<point 3>"],
+  "response": "<short helpful reply to the user, 2-4 sentences>"
 }
-В key_points ровно 3 элемента.
-Отвечай на языке исходного текста."""
+key_points must contain exactly 3 items.
+Language: detect the language of the text inside the <text> tags and write ALL values
+in that language."""
 
-USER_TEMPLATE = "Обработай текст между тегами <text>.\n<text>\n{text}\n</text>"
+USER_TEMPLATE = "Process the text inside the <text> tags.\n<text>\n{text}\n</text>"
 
 
 def build_user_prompt(text: str) -> str:
