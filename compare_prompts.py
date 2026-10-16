@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 from llm_pipeline.checks import check_output
-from llm_pipeline.pipeline import process_text
+from llm_pipeline.pipeline import LLMOutputError, process_text
 from llm_pipeline.prompts import PROMPT_VARIANTS
 from main import load_inputs
 
@@ -18,9 +18,9 @@ def run_experiment(inputs: list, variants: dict, repeats: int) -> list[dict]:
             for i in range(repeats):
                 print(f"{variant} | {name} | повтор {i + 1}")
                 try:
-                    output = process_text(text, prompt)
+                    output = process_text(text, prompt).model_dump()
                     checks = check_output(output, text)
-                except json.JSONDecodeError:
+                except LLMOutputError:
                     output = None
                     checks = {"passed": False}
                 rows.append({"variant": variant, "input": name, "repeat": i,

@@ -1,0 +1,21 @@
+{
+  "total": 5,
+  "ok": 5,
+  "failed": [],
+  "by_category": {
+    "question": 0,
+    "complaint": 2,
+    "request": 2,
+    "news": 1,
+    "other": 0
+  },
+  "by_sentiment": {
+    "positive": 0,
+    "neutral": 3,
+    "negative": 2
+  },
+  "needs_attention": [
+    "01_laptop",
+    "04_long"
+  ]
+}
