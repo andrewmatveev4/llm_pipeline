@@ -4,7 +4,7 @@ from pathlib import Path
 from llm_pipeline.pipeline import process_text
 
 INPUT_DIR = "sample_inputs"
-OUTPUT_PATH = "outputs/day01_results.json"
+OUTPUT_PATH = "outputs/day02_results.json"
 
 
 def load_inputs(folder: str) -> list[tuple[str, str]]:

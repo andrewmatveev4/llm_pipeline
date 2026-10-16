@@ -17,7 +17,7 @@ Length limits:
 
 EXAMPLE = """
 Example.
-Input: <text>The office printer jams every morning and the IT ticket has been open for a week.</text>
+Input: <text>The office printer jams daily and the IT ticket has been open for a week.</text>
 Output:
 {
   "summary": "The office printer jams daily and the IT ticket is still unresolved.",
@@ -35,7 +35,7 @@ PROMPT_VARIANTS = {
     "v3_example": BASE_PROMPT + LIMITS + EXAMPLE,
 }
 
-SYSTEM_PROMPT = PROMPT_VARIANTS["v1_baseline"]
+SYSTEM_PROMPT = PROMPT_VARIANTS["v2_limits"]
 
 USER_TEMPLATE = "Process the text inside the <text> tags.\n<text>\n{text}\n</text>"
 
