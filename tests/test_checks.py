@@ -3,7 +3,7 @@ from llm_pipeline.checks import check_output, count_sentences, has_cyrillic
 GOOD = {
     "summary": "Ноутбук тормозит.",
     "key_points": ["а", "б", "в"],
-    "response": "Проверь процессы.",
+    "final_answer": "Проверь процессы.",
 }
 
 

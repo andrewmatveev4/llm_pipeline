@@ -17,7 +17,7 @@ def has_cyrillic(s: str) -> bool:
 SUMMARY_MAX_WORDS = 25
 POINT_MAX_WORDS = 12
 RESPONSE_MAX_SENTENCES = 3
-REQUIRED_KEYS = ("summary", "key_points", "response")
+REQUIRED_KEYS = ("summary", "key_points", "final_answer")
 
 
 def check_output(output: dict, text: str) -> dict:
@@ -26,7 +26,7 @@ def check_output(output: dict, text: str) -> dict:
 
     summary = output["summary"]
     points = output["key_points"]
-    response = output["response"]
+    response = output["final_answer"]
     input_cyr = has_cyrillic(text)
 
     checks = {

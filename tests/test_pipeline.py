@@ -6,7 +6,13 @@ from llm_pipeline import pipeline
 
 
 def test_process_text_parses_json(monkeypatch):
-    fake = {"summary": "s", "key_points": ["a", "b", "c"], "response": "r"}
+    fake = {
+        "summary": "s",
+        "category": "question",
+        "sentiment": "neutral",
+        "key_points": ["a", "b", "c"],
+        "final_answer": "r",
+    }
     monkeypatch.setattr(pipeline, "call_llm", lambda system, user: json.dumps(fake))
     assert pipeline.process_text("любой текст") == fake
 
