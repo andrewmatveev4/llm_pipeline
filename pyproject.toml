@@ -6,10 +6,11 @@ build-backend = "setuptools.build_meta"
 name = "llm_pipeline"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = ["openai", "python-dotenv"]
+dependencies = ["openai", "python-dotenv", "pydantic>=2"]
 
 [project.optional-dependencies]
 dev = ["pytest", "flake8", "autopep8"]
 
 [tool.setuptools]
 packages = ["llm_pipeline"]
+
