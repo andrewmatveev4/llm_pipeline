@@ -54,3 +54,5 @@ class ChainState(BaseModel):
     answer: str | None = None
     check: SelfCheck | None = None
     passed: bool | None = None
+    failed_step: str | None = None
+    error: str | None = None

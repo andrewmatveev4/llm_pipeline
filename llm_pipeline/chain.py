@@ -61,3 +61,19 @@ def self_check(state: ChainState) -> None:
     state.check = run_step("self_check", SELF_CHECK_PROMPT, user,   SelfCheck)
     state.passed = not state.check.contradictions and not state.check.lost_details
     logger.info("[self_check] решение: %s", "OK" if state.passed else "НУЖНА ПРОВЕРКА")
+
+
+STEPS = [extract_meaning, classify_request, build_fields, write_answer, self_check]
+
+
+def run_chain(text: str) -> ChainState:
+    state = ChainState(text=text)
+    for step in STEPS:
+        try:
+            step(state)
+        except LLMOutputError as e:
+            state.failed_step = step.__name__
+            state.error = str(e)
+            logger.error("[%s] ошибка, цепочка остановлена: %s", step.__name__, e)
+            break
+    return state
