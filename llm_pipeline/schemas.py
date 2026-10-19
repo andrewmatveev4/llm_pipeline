@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 
 Category = Literal["support", "feedback", "complaint", "sales", "general_question", "other"]
 Sentiment = Literal["positive", "neutral", "negative"]
+Urgency = Literal["low", "medium", "high"]
 
 
 class Classification(BaseModel):
@@ -31,7 +32,18 @@ class RequestType(BaseModel):
     sentiment: Sentiment
 
 
+class Details(BaseModel):
+    product: str = Field(min_length=1)
+    problem: str = Field(min_length=1)
+    requested_action: str = Field(min_length=1)
+    urgency: Urgency
+    facts: list[str]
+    missing_info: list[str]
+
+
 class ChainState(BaseModel):
     text: str
     meaning: Meaning | None = None
     request: RequestType | None = None
+    details: Details | None = None
+    answer: str | None = None

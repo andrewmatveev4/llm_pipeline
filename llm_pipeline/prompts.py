@@ -109,3 +109,61 @@ def build_user_prompt(text: str) -> str:
 
 def build_answer_prompt(text: str, intent: str) -> str:
     return ANSWER_TEMPLATE.format(text=text, intent=intent)
+
+
+DETAILS_PROMPT = """You extract structured fields from a user's message for a support agent.
+Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
+{
+  "product": "<product or service the message is about, or unknown>",
+  "problem": "<what is wrong or what is asked, one sentence>",
+  "requested_action": "<what the user wants us to do, one sentence>",
+  "urgency": "<low, medium or high>",
+  "facts": ["<concrete fact from the text: numbers, dates, devices, amounts>"],
+  "missing_info": ["<what a support agent still needs to perform requested_action>"]
+}
+facts must contain only facts stated in the text, nothing invented.
+missing_info: what a support agent would still need to perform requested_action
+(order number, account, device model, ...). Empty list only if nothing is needed."""
+
+DETAILS_TEMPLATE = (
+    "Language: {language}. Write all values except urgency in {language}.\n"
+    "Category: {category}. Intent: {intent}\n"
+    "Summary: {summary}\n<text>\n{text}\n</text>"
+)
+
+
+def build_details_prompt(text: str, meaning, request) -> str:
+    return DETAILS_TEMPLATE.format(
+        text=text, summary=meaning.summary, language=meaning.language,
+        category=request.category, intent=request.intent,
+    )
+
+
+FINAL_RULES = (
+    "\nUse the structured fields to make the reply specific: mention the product and "
+    "react to the requested action. If urgency is high, acknowledge that it is urgent. "
+    "If missing info is not 'none', ask for the single most important missing item."
+)
+
+FINAL_TEMPLATE = (
+    "Reply in {language}.\n"
+    "Category: {category}. Intent: {intent}\n"
+    "Product: {product}\nProblem: {problem}\nRequested action: {requested_action}\n"
+    "Urgency: {urgency}\nFacts: {facts}\nMissing info: {missing_info}\n"
+    "<text>\n{text}\n</text>"
+)
+
+
+def build_final_prompt(text: str, meaning, request, details) -> str:
+    return FINAL_TEMPLATE.format(
+        language=meaning.language,
+        category=request.category,
+        intent=request.intent,
+        product=details.product,
+        problem=details.problem,
+        requested_action=details.requested_action,
+        urgency=details.urgency,
+        facts="; ".join(details.facts),
+        missing_info="; ".join(details.missing_info) or "none",
+        text=text,
+    )
