@@ -1,0 +1,12 @@
+{
+  "01_laptop": "support",
+  "02_news": "other",
+  "03_request": "general_question",
+  "04_long": "general_question",
+  "05_injection": "other",
+  "06_complaint": "complaint",
+  "07_feedback": "feedback",
+  "08_sales": "sales",
+  "09_support_en": "support",
+  "10_feedback_boundary": "feedback"
+}
