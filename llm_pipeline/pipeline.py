@@ -6,6 +6,7 @@ from llm_pipeline.routes import get_route_prompt
 from llm_pipeline.schemas import Classification, PipelineResult
 
 
+
 class LLMOutputError(Exception):
     def __init__(self, message: str, raw: str):
         super().__init__(message)
