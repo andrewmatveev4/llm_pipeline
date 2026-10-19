@@ -1,10 +1,9 @@
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from llm_pipeline.llm_client import call_llm
 from llm_pipeline.prompts import SYSTEM_PROMPT, build_answer_prompt, build_user_prompt
 from llm_pipeline.routes import get_route_prompt
 from llm_pipeline.schemas import Classification, PipelineResult
-
 
 
 class LLMOutputError(Exception):
@@ -21,9 +20,9 @@ def describe_errors(e: ValidationError) -> str:
     return "Ответ модели не соответствует схеме: " + "; ".join(parts)
 
 
-def parse_llm_output(raw: str) -> Classification:
+def parse_llm_output(raw: str, schema: type[BaseModel] = Classification) -> BaseModel:
     try:
-        return Classification.model_validate_json(raw)
+        return schema.model_validate_json(raw)
     except ValidationError as e:
         raise LLMOutputError(describe_errors(e), raw) from e
 
