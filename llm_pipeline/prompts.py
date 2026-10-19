@@ -12,13 +12,14 @@ Return ONLY a JSON object, no explanations and no markdown, with exactly these k
 {
   "summary": "<short summary>",
   "category": "<one category>",
+  "intent": "<what exactly the user wants, 3-8 words>",
   "sentiment": "<one sentiment>",
   "key_points": ["<point 1>", "<point 2>", "<point 3>"],
   "final_answer": "<short helpful reply to the user>"
 }
 key_points must contain exactly 3 items.""" + ALLOWED_VALUES + """
 Language: detect the language of the text inside the <text> tags and write summary,
-key_points and final_answer in that language. category and sentiment are always in English."""
+intent, key_points and final_answer in that language. category and sentiment are always in English."""
 
 LIMITS = """
 Length limits:

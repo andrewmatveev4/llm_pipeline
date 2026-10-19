@@ -8,5 +8,5 @@ def test_report_counts_zeros_and_failures():
     ]
     report = build_report(results)
     assert report["failed"] == ["b"]
-    assert report["by_category"]["question"] == 0
+    assert report["by_category"]["general_question"] == 0
     assert report["needs_attention"] == ["a"]

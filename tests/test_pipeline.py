@@ -8,7 +8,8 @@ from llm_pipeline import pipeline
 def test_process_text_parses_json(monkeypatch):
     fake = {
         "summary": "s",
-        "category": "question",
+        "category": "general_question",
+        "intent": "i",
         "sentiment": "neutral",
         "key_points": ["a", "b", "c"],
         "final_answer": "r",
