@@ -1,0 +1,24 @@
+{
+  "total": 10,
+  "ok": 10,
+  "failed": [],
+  "by_category": {
+    "support": 4,
+    "feedback": 2,
+    "complaint": 1,
+    "sales": 1,
+    "general_question": 1,
+    "other": 1
+  },
+  "by_sentiment": {
+    "positive": 1,
+    "neutral": 5,
+    "negative": 4
+  },
+  "needs_attention": [
+    "01_laptop",
+    "04_long",
+    "06_complaint",
+    "09_support_en"
+  ]
+}

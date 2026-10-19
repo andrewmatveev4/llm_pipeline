@@ -7,8 +7,8 @@ from llm_pipeline.schemas import Category, Sentiment
 from llm_pipeline.pipeline import LLMOutputError, process_text
 
 INPUT_DIR = "sample_inputs"
-OUTPUT_PATH = "outputs/day03_results.json"
-REPORT_PATH = "outputs/day03_report.json"
+OUTPUT_PATH = "outputs/day04_results.json"
+REPORT_PATH = "outputs/day04_report.json"
 
 
 def load_inputs(folder: str) -> list[tuple[str, str]]:

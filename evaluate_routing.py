@@ -1,11 +1,15 @@
 import json
 from pathlib import Path
 
-from llm_pipeline.pipeline import LLMOutputError, process_text
+from llm_pipeline.checks import count_sentences
+from llm_pipeline.pipeline import LLMOutputError, classify, generate_answer, process_text
+from llm_pipeline.routes import ROUTES
 from main import load_inputs
 
 LABELS_PATH = "sample_inputs/labels.json"
 RESULTS_PATH = "outputs/day04_routing.json"
+FORCED_PATH = "outputs/day04_forced_routes.json"
+FORCED_TEXT = "01_laptop"
 
 
 def run_classification(inputs: list, labels: dict) -> list[dict]:
@@ -35,6 +39,16 @@ def accuracy_report(rows: list[dict]) -> dict:
     }
 
 
+def run_forced_routes(text: str) -> list[dict]:
+    classification = classify(text)
+    rows = []
+    for route in ROUTES:
+        forced = classification.model_copy(update={"category": route})
+        answer = generate_answer(text, forced)
+        rows.append({"route": route, "sentences": count_sentences(answer), "answer": answer})
+    return rows
+
+
 def main() -> None:
     path = Path(RESULTS_PATH)
     if path.exists():
@@ -48,5 +62,18 @@ def main() -> None:
     print(json.dumps(accuracy_report(rows), ensure_ascii=False, indent=2))
 
 
+def show_forced_routes() -> None:
+    path = Path(FORCED_PATH)
+    if path.exists():
+        rows = json.loads(path.read_text(encoding="utf-8"))
+    else:
+        text = dict(load_inputs("sample_inputs"))[FORCED_TEXT]
+        rows = run_forced_routes(text)
+        path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    for r in rows:
+        print(f"\n=== {r['route']} ({r['sentences']} предл.)\n{r['answer']}")
+
+
 if __name__ == "__main__":
     main()
+    show_forced_routes()
