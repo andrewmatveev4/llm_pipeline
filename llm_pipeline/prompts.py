@@ -68,6 +68,36 @@ ANSWER_TEMPLATE = (
 )
 
 
+MEANING_PROMPT = """You extract the meaning of a user's message.
+Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
+{
+  "summary": "<one sentence, at most 25 words>",
+  "key_points": ["<point 1>", "<point 2>", "<point 3>"],
+  "language": "<language of the text, in English: Russian, English, ...>"
+}
+key_points must contain exactly 3 items, each at most 12 words.
+Write summary and key_points in the language of the text inside the <text> tags."""
+
+
+REQUEST_PROMPT = """You classify a user's message.
+Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
+{
+  "category": "<one category>",
+  "intent": "<what exactly the user wants, 3-8 words>",
+  "sentiment": "<one sentiment>"
+}""" + ALLOWED_VALUES + CATEGORY_RULES + """
+category and sentiment are always in English."""
+
+REQUEST_TEMPLATE = (
+    "Language of the message: {language}. Write intent in {language}.\n"
+    "Summary: {summary}\n<text>\n{text}\n</text>"
+)
+
+
+def build_request_prompt(text: str, summary: str, language: str) -> str:
+    return REQUEST_TEMPLATE.format(text=text, summary=summary, language=language)
+
+
 SYSTEM_PROMPT = PROMPT_VARIANTS["v2_limits"]
 
 USER_TEMPLATE = "Process the text inside the <text> tags.\n<text>\n{text}\n</text>"

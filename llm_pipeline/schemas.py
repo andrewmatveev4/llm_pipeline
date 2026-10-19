@@ -25,6 +25,13 @@ class Meaning(BaseModel):
     language: str = Field(min_length=2, max_length=30)
 
 
+class RequestType(BaseModel):
+    category: Category
+    intent: str = Field(min_length=1, max_length=80)
+    sentiment: Sentiment
+
+
 class ChainState(BaseModel):
     text: str
     meaning: Meaning | None = None
+    request: RequestType | None = None
