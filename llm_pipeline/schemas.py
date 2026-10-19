@@ -41,9 +41,16 @@ class Details(BaseModel):
     missing_info: list[str]
 
 
+class SelfCheck(BaseModel):
+    contradictions: list[str]
+    lost_details: list[str]
+
+
 class ChainState(BaseModel):
     text: str
     meaning: Meaning | None = None
     request: RequestType | None = None
     details: Details | None = None
     answer: str | None = None
+    check: SelfCheck | None = None
+    passed: bool | None = None

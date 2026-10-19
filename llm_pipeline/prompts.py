@@ -167,3 +167,26 @@ def build_final_prompt(text: str, meaning, request, details) -> str:
         missing_info="; ".join(details.missing_info) or "none",
         text=text,
     )
+
+
+SELF_CHECK_PROMPT = """You are a strict reviewer of a support reply.
+Compare the reply with the user's original message and the list of facts.
+Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
+{
+  "contradictions": ["<statement in the reply that contradicts the message>"],
+  "lost_details": ["<important fact from the message that the reply ignores>"]
+}
+A detail is lost only if ignoring it makes the reply wrong or noticeably less useful.
+Use empty lists if there are no problems. Write the findings in English."""
+
+SELF_CHECK_TEMPLATE = (
+    "Facts: {facts}\n"
+    "<message>\n{text}\n</message>\n"
+    "<reply>\n{answer}\n</reply>"
+)
+
+
+def build_check_prompt(text: str, details, answer: str) -> str:
+    return SELF_CHECK_TEMPLATE.format(
+        facts="; ".join(details.facts) or "none", text=text, answer=answer,
+    )

@@ -9,13 +9,15 @@ from llm_pipeline.prompts import (
     FINAL_RULES,
     MEANING_PROMPT,
     REQUEST_PROMPT,
+    SELF_CHECK_PROMPT,
+    build_check_prompt,
     build_details_prompt,
     build_final_prompt,
     build_request_prompt,
     build_user_prompt,
 )
 from llm_pipeline.routes import get_route_prompt
-from llm_pipeline.schemas import ChainState, Details, Meaning, RequestType
+from llm_pipeline.schemas import ChainState, Details, Meaning, RequestType, SelfCheck
 
 logger = logging.getLogger(__name__)
 
@@ -52,3 +54,10 @@ def write_answer(state: ChainState) -> None:
         raise LLMOutputError("Модель вернула пустой ответ на шаге write_answer", answer)
     state.answer = answer
     logger.info("[write_answer] результат: %s", answer)
+
+
+def self_check(state: ChainState) -> None:
+    user = build_check_prompt(state.text, state.details, state.answer)
+    state.check = run_step("self_check", SELF_CHECK_PROMPT, user,   SelfCheck)
+    state.passed = not state.check.contradictions and not state.check.lost_details
+    logger.info("[self_check] решение: %s", "OK" if state.passed else "НУЖНА ПРОВЕРКА")
