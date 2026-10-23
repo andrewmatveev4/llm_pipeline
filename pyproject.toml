@@ -11,6 +11,9 @@ dependencies = ["openai", "python-dotenv", "pydantic>=2"]
 [project.optional-dependencies]
 dev = ["pytest", "flake8", "autopep8"]
 
+[project.scripts]
+llm-pipeline = "llm_pipeline.cli:main"
+
 [tool.setuptools]
 packages = ["llm_pipeline"]
 
