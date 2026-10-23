@@ -4,12 +4,7 @@ from llm_pipeline.llm_client import call_llm
 from llm_pipeline.prompts import SYSTEM_PROMPT, build_answer_prompt, build_user_prompt
 from llm_pipeline.routes import get_route_prompt
 from llm_pipeline.schemas import Classification, PipelineResult
-
-
-class LLMOutputError(Exception):
-    def __init__(self, message: str, raw: str):
-        super().__init__(message)
-        self.raw = raw
+from llm_pipeline.errors import LLMOutputError
 
 
 def describe_errors(e: ValidationError) -> str:
