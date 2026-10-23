@@ -1,4 +1,5 @@
 import re
+from llm_pipeline.prompts import POINT_MAX_WORDS, SUMMARY_MAX_WORDS
 
 
 def count_words(s: str) -> int:
@@ -14,8 +15,6 @@ def has_cyrillic(s: str) -> bool:
     return re.search(r"[а-яёА-ЯЁ]", s) is not None
 
 
-SUMMARY_MAX_WORDS = 25
-POINT_MAX_WORDS = 12
 RESPONSE_MAX_SENTENCES = 3
 REQUIRED_KEYS = ("summary", "key_points", "final_answer")
 

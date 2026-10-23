@@ -2,6 +2,11 @@ from typing import get_args
 
 from llm_pipeline.schemas import Category, Sentiment
 
+
+SUMMARY_MAX_WORDS = 25
+POINT_MAX_WORDS = 12
+
+
 ALLOWED_VALUES = (
     "\ncategory must be one of: " + ", ".join(get_args(Category)) + "."
     + "\nsentiment must be one of: " + ", ".join(get_args(Sentiment)) + "."
@@ -34,10 +39,11 @@ key_points must contain exactly 3 items.""" + ALLOWED_VALUES + CATEGORY_RULES + 
 Language: detect the language of the text inside the <text> tags and write summary,
 intent and key_points in that language. category and sentiment are always in English."""
 
-LIMITS = """
-Length limits:
-- summary: one sentence, at most 25 words.
-- each key point: at most 12 words."""
+LIMITS = (
+    "\nLength limits:\n"
+    f"- summary: one sentence, at most {SUMMARY_MAX_WORDS} words.\n"
+    f"- each key point: at most {POINT_MAX_WORDS} words."
+)
 
 EXAMPLE = """
 Example.
@@ -71,13 +77,12 @@ ANSWER_TEMPLATE = (
 MEANING_PROMPT = """You extract the meaning of a user's message.
 Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
 {
-  "summary": "<one sentence, at most 25 words>",
+  "summary": "<one sentence>",
   "key_points": ["<point 1>", "<point 2>", "<point 3>"],
   "language": "<language of the text, in English: Russian, English, ...>"
 }
-key_points must contain exactly 3 items, each at most 12 words.
+key_points must contain exactly 3 items.""" + LIMITS + """
 Write summary and key_points in the language of the text inside the <text> tags."""
-
 
 REQUEST_PROMPT = """You classify a user's message.
 Return ONLY a JSON object, no explanations and no markdown, with exactly these keys:
