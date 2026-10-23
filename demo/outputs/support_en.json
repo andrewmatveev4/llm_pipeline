@@ -1,0 +1,40 @@
+{
+  "text": "After the latest update the app crashes every time I try to upload a photo. iPhone 15, latest iOS. Reinstalling didn't help.",
+  "meaning": {
+    "summary": "The app crashes on photo upload after the latest update on iPhone 15.",
+    "key_points": [
+      "App crashes when uploading photos.",
+      "Issue occurs on iPhone 15 with latest iOS.",
+      "Reinstalling the app did not fix the problem."
+    ],
+    "language": "English"
+  },
+  "request": {
+    "category": "support",
+    "intent": "fix app crashing on photo upload",
+    "sentiment": "negative"
+  },
+  "details": {
+    "product": "app",
+    "problem": "The app crashes every time the user tries to upload a photo after the latest update.",
+    "requested_action": "Fix the app crashing issue on photo upload.",
+    "urgency": "high",
+    "facts": [
+      "app crashes on photo upload",
+      "latest update",
+      "iPhone 15",
+      "latest iOS",
+      "reinstalling didn't help"
+    ],
+    "missing_info": []
+  },
+  "answer": "1. Clear the app cache and data: Go to your iPhone Settings > General > iPhone Storage > find the app > Offload App, then reinstall it. This can remove corrupted temporary files causing the crash.\n2. Check app permissions: Ensure the app has permission to access Photos. Go to Settings > Privacy > Photos > select the app and allow access.\n3. Report the issue to the app developer with details about your device, iOS version, and the crash behavior so they can provide a fix in the next update.\n\nSince reinstalling didn't help, these steps focus on clearing residual data and permissions. If the problem persists, please let me know if you see any error messages or crash logs.",
+  "check": {
+    "contradictions": [],
+    "lost_details": []
+  },
+  "passed": true,
+  "failed_step": null,
+  "error": null,
+  "fallback_reason": null
+}

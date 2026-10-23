@@ -1,0 +1,12 @@
+{
+  "text": "   ",
+  "meaning": null,
+  "request": null,
+  "details": null,
+  "answer": null,
+  "check": null,
+  "passed": null,
+  "failed_step": "check_input",
+  "error": "Пустой текст: нечего обрабатывать",
+  "fallback_reason": null
+}

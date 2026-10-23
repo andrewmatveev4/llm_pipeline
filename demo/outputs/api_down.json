@@ -1,0 +1,12 @@
+{
+  "text": "Третий раз за месяц курьер опаздывает на два часа, а поддержка не отвечает. Это неуважение к клиентам. Верните деньги за доставку.",
+  "meaning": null,
+  "request": null,
+  "details": null,
+  "answer": null,
+  "check": null,
+  "passed": null,
+  "failed_step": "extract_meaning",
+  "error": "Временная ошибка API: Connection error.",
+  "fallback_reason": null
+}
