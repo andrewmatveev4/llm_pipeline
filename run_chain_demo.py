@@ -3,7 +3,7 @@ from pathlib import Path
 
 from llm_pipeline.chain import run_chain
 from llm_pipeline.log import setup_logging
-from main import load_inputs
+from llm_pipeline.files import load_inputs
 
 RESULTS_PATH = "outputs/day05_chain.json"
 

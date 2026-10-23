@@ -5,7 +5,7 @@ from pathlib import Path
 from llm_pipeline.checks import check_output
 from llm_pipeline.pipeline import LLMOutputError, process_text
 from llm_pipeline.prompts import PROMPT_VARIANTS
-from main import load_inputs
+from llm_pipeline.files import load_inputs
 
 RESULTS_PATH = "outputs/day02_comparison.json"
 REPEATS = 3

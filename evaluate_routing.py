@@ -4,7 +4,7 @@ from pathlib import Path
 from llm_pipeline.checks import count_sentences
 from llm_pipeline.pipeline import LLMOutputError, classify, generate_answer, process_text
 from llm_pipeline.routes import ROUTES
-from main import load_inputs
+from llm_pipeline.files import load_inputs
 
 LABELS_PATH = "sample_inputs/labels.json"
 RESULTS_PATH = "outputs/day04_routing.json"

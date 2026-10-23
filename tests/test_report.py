@@ -1,4 +1,4 @@
-from main import build_report
+from llm_pipeline.report import build_report
 
 
 def test_report_counts_zeros_and_failures():
