@@ -26,6 +26,18 @@ MAX_ANSWER_CHARS = 1500
 REPAIR_HINT = "\nYour previous reply was rejected with this error, fix it: "
 
 
+FALLBACK_ANSWERS = {
+    "Russian": "Спасибо за обращение. Мы передали его специалисту, "
+               "он ответит вам в ближайшее время.",
+    "English": "Thank you for your message. We have passed it to a specialist "
+               "who will get back to you shortly.",
+}
+
+
+def fallback_answer(language: str) -> str:
+    return FALLBACK_ANSWERS.get(language, FALLBACK_ANSWERS["English"])
+
+
 def ask_json(system: str, user: str, schema: type[BaseModel]) -> BaseModel:
     raw = with_retry(lambda: call_llm(system, user))
     return parse_llm_output(raw, schema)
@@ -57,23 +69,37 @@ def build_fields(state: ChainState) -> None:
     state.details = run_step("build_fields", DETAILS_PROMPT, user, Details)
 
 
-def write_answer(state: ChainState) -> None:
+def compose_answer(state: ChainState) -> None:
     route = state.request.category
-    logger.info("[write_answer] старт, маршрут: %s", route)
+    logger.info("[compose_answer] старт, маршрут: %s", route)
     system = get_route_prompt(route) + FINAL_RULES
     user = build_final_prompt(state.text, state.meaning, state.request, state.details)
     answer = with_retry(lambda: call_llm(system, user)).strip()
     if not answer:
-        raise LLMOutputError("Модель вернула пустой ответ на шаге write_answer", answer)
+        raise LLMOutputError("Модель вернула пустой ответ на шаге compose_answer", answer)
     if len(answer) > MAX_ANSWER_CHARS:
         raise LLMOutputError(
             f"Ответ слишком длинный: {len(answer)} символов, максимум {MAX_ANSWER_CHARS}", answer
         )
     state.answer = answer
     logger.info("[write_answer] результат: %s", answer)
+    return answer
+
+
+def write_answer(state: ChainState) -> None:
+    try:
+        state.answer = compose_answer(state)
+    except (LLMOutputError, LLMAPIError) as e:
+        state.answer = fallback_answer(state.meaning.language)
+        state.fallback_reason = str(e)
+        logger.warning("[write_answer] ответ не получен, отдан fallback: %s", e)
 
 
 def self_check(state: ChainState) -> None:
+    if state.fallback_reason:
+        state.passed = False
+        logger.info("[self_check] пропущен: был fallback, нужна проверка человеком")
+        return
     user = build_check_prompt(state.text, state.details, state.answer)
     state.check = run_step("self_check", SELF_CHECK_PROMPT, user,   SelfCheck)
     state.passed = not state.check.contradictions and not state.check.lost_details

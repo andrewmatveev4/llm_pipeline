@@ -56,3 +56,4 @@ class ChainState(BaseModel):
     passed: bool | None = None
     failed_step: str | None = None
     error: str | None = None
+    fallback_reason: str | None = None

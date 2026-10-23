@@ -6,8 +6,11 @@ from llm_pipeline.llm_client import LLMAPIError
 logger = logging.getLogger(__name__)
 
 
-def with_retry(func, attempts: int = 3, base_delay: float = 1.0, sleep=time.sleep):
+def with_retry(func, attempts: int = 3, base_delay: float = 1.0, sleep=None):
+    if sleep is None:
+        sleep = time.sleep
     for attempt in range(1, attempts + 1):
+        ...
         try:
             return func()
         except LLMAPIError as e:
