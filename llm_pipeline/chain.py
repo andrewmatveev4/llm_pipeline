@@ -18,6 +18,7 @@ from llm_pipeline.prompts import (
 )
 from llm_pipeline.routes import get_route_prompt
 from llm_pipeline.schemas import ChainState, Details, Meaning, RequestType, SelfCheck
+from llm_pipeline.retry import with_retry
 
 logger = logging.getLogger(__name__)
 MAX_INPUT_CHARS = 4000
@@ -25,7 +26,7 @@ MAX_INPUT_CHARS = 4000
 
 def run_step(name: str, system: str, user: str, schema: type[BaseModel]) -> BaseModel:
     logger.info("[%s] старт", name)
-    result = parse_llm_output(call_llm(system, user), schema)
+    result = parse_llm_output(with_retry(lambda: call_llm(system, user)), schema)
     logger.info("[%s] результат: %s", name, result.model_dump_json())
     return result
 
@@ -50,7 +51,7 @@ def write_answer(state: ChainState) -> None:
     logger.info("[write_answer] старт, маршрут: %s", route)
     system = get_route_prompt(route) + FINAL_RULES
     user = build_final_prompt(state.text, state.meaning, state.request, state.details)
-    answer = call_llm(system, user).strip()
+    answer = with_retry(lambda: call_llm(system, user)).strip()
     if not answer:
         raise LLMOutputError("Модель вернула пустой ответ на шаге write_answer", answer)
     state.answer = answer
