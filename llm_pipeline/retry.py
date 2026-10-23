@@ -18,5 +18,6 @@ def with_retry(func, attempts: int = 3, base_delay: float = 1.0, sleep=time.slee
                 logger.error("Превышено количество попыток: %s", e)
                 raise
             delay = base_delay * (2 ** (attempt - 1))
-            logger.warning("Временная ошибка: %s. Повтор через %.1f секунд...", e, delay)
+            logger.warning("Повтор через %.1f с (попытка %s из %s): %s",
+                           delay, attempt, attempts, e)
             sleep(delay)

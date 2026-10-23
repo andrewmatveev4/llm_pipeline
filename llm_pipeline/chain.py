@@ -2,7 +2,7 @@ import logging
 
 from pydantic import BaseModel
 
-from llm_pipeline.llm_client import call_llm
+from llm_pipeline.llm_client import LLMAPIError, call_llm
 from llm_pipeline.pipeline import LLMOutputError, parse_llm_output
 from llm_pipeline.prompts import (
     DETAILS_PROMPT,
@@ -87,7 +87,7 @@ def run_chain(text: str) -> ChainState:
     for step in STEPS:
         try:
             step(state)
-        except LLMOutputError as e:
+        except (LLMOutputError, LLMAPIError) as e:
             state.failed_step = step.__name__
             state.error = str(e)
             logger.error("[%s] ошибка, цепочка остановлена: %s", step.__name__, e)
