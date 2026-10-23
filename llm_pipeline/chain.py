@@ -23,11 +23,21 @@ from llm_pipeline.retry import with_retry
 logger = logging.getLogger(__name__)
 MAX_INPUT_CHARS = 4000
 MAX_ANSWER_CHARS = 1500
+REPAIR_HINT = "\nYour previous reply was rejected with this error, fix it: "
+
+
+def ask_json(system: str, user: str, schema: type[BaseModel]) -> BaseModel:
+    raw = with_retry(lambda: call_llm(system, user))
+    return parse_llm_output(raw, schema)
 
 
 def run_step(name: str, system: str, user: str, schema: type[BaseModel]) -> BaseModel:
     logger.info("[%s] старт", name)
-    result = parse_llm_output(with_retry(lambda: call_llm(system, user)), schema)
+    try:
+        result = ask_json(system, user, schema)
+    except LLMOutputError as e:
+        logger.warning("[%s] плохой ответ, повтор с подсказкой: %s", name, e)
+        result = ask_json(system + REPAIR_HINT + str(e), user, schema)
     logger.info("[%s] результат: %s", name, result.model_dump_json())
     return result
 

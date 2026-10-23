@@ -1,6 +1,7 @@
 import json
 
 from llm_pipeline import chain
+from llm_pipeline.chain import REPAIR_HINT
 from llm_pipeline.prompts import (
     DETAILS_PROMPT, FINAL_RULES, MEANING_PROMPT, REQUEST_PROMPT, SELF_CHECK_PROMPT,
 )
@@ -66,4 +67,5 @@ def test_broken_step_stops_chain(monkeypatch):
     assert state.failed_step == "classify_request"
     assert state.meaning is not None
     assert state.request is None
-    assert len(calls) == 2
+    assert len(calls) == 3  # шаг 1 + шаг 2 дважды: основной вызов и повтор с подсказкой
+    assert REPAIR_HINT in calls[2][0]
