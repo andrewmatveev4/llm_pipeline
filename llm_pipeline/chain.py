@@ -22,6 +22,7 @@ from llm_pipeline.retry import with_retry
 
 logger = logging.getLogger(__name__)
 MAX_INPUT_CHARS = 4000
+MAX_ANSWER_CHARS = 1500
 
 
 def run_step(name: str, system: str, user: str, schema: type[BaseModel]) -> BaseModel:
@@ -54,6 +55,10 @@ def write_answer(state: ChainState) -> None:
     answer = with_retry(lambda: call_llm(system, user)).strip()
     if not answer:
         raise LLMOutputError("Модель вернула пустой ответ на шаге write_answer", answer)
+    if len(answer) > MAX_ANSWER_CHARS:
+        raise LLMOutputError(
+            f"Ответ слишком длинный: {len(answer)} символов, максимум {MAX_ANSWER_CHARS}", answer
+        )
     state.answer = answer
     logger.info("[write_answer] результат: %s", answer)
 
