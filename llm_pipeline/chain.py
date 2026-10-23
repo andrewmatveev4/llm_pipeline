@@ -20,6 +20,7 @@ from llm_pipeline.routes import get_route_prompt
 from llm_pipeline.schemas import ChainState, Details, Meaning, RequestType, SelfCheck
 
 logger = logging.getLogger(__name__)
+MAX_INPUT_CHARS = 4000
 
 
 def run_step(name: str, system: str, user: str, schema: type[BaseModel]) -> BaseModel:
@@ -66,8 +67,22 @@ def self_check(state: ChainState) -> None:
 STEPS = [extract_meaning, classify_request, build_fields, write_answer, self_check]
 
 
+def check_input(text: str) -> str | None:
+    if not text.strip():
+        return "Пустой текст: нечего обрабатывать"
+    if len(text) > MAX_INPUT_CHARS:
+        return f"Текст слишком длинный: {len(text)} символов, максимум {MAX_INPUT_CHARS}"
+    return None
+
+
 def run_chain(text: str) -> ChainState:
     state = ChainState(text=text)
+    problem = check_input(text)
+    if problem:
+        state.failed_step = "check_input"
+        state.error = problem
+        logger.warning("[check_input] %s", problem)
+        return state
     for step in STEPS:
         try:
             step(state)
