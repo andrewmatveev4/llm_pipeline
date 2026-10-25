@@ -14,7 +14,7 @@ def get_client() -> OpenAI:
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise RuntimeError("OPENAI_API_KEY не задан: заполни .env по образцу .env.example")
+        raise ConfigError("OPENAI_API_KEY не задан: заполни .env по образцу .env.example")
     return OpenAI(api_key=api_key, max_retries=0, timeout=30)
 
 
@@ -22,7 +22,7 @@ def call_llm(system: str, user: str, temperature: float = 0.2, max_tokens: int =
     client = get_client()
     model = os.getenv("LLM_MODEL")
     if not model:
-        raise RuntimeError("LLM_MODEL не задан: заполни .env по образцу .env.example")
+        raise ConfigError("LLM_MODEL не задан: заполни .env по образцу .env.example")
     start = time.perf_counter()
     try:
         response = client.chat.completions.create(
