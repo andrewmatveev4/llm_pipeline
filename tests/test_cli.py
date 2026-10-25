@@ -3,6 +3,8 @@ import pytest
 import json
 
 from llm_pipeline.cli import build_parser, main
+from llm_pipeline import chain
+from llm_pipeline.errors import ConfigError
 
 
 def test_text_argument():
@@ -38,3 +40,12 @@ def test_main_json_output(capsys):
     main(["   ", "--json"])
     data = json.loads(capsys.readouterr().out)
     assert data["failed_step"] == "check_input"
+
+
+def test_main_without_config_returns_2(monkeypatch, capsys):
+    def fake(system, user):
+        raise ConfigError("OPENAI_API_KEY не задан")
+
+    monkeypatch.setattr(chain, "call_llm", fake)
+    assert main(["текст"]) == 2
+    assert "Ошибка настройки" in capsys.readouterr().err

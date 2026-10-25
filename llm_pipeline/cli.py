@@ -3,6 +3,7 @@ import logging
 import sys
 from pathlib import Path
 
+from llm_pipeline.errors import ConfigError
 from llm_pipeline.chain import run_chain
 from llm_pipeline.log import setup_logging
 
@@ -50,7 +51,11 @@ def main(argv: list[str] | None = None) -> int:
     except OSError as e:
         print(f"Не удалось прочитать файл: {e}", file=sys.stderr)
         return 2
-    state = run_chain(text)
+    try:
+        state = run_chain(text)
+    except ConfigError as e:
+        print(f"Ошибка настройки: {e}", file=sys.stderr)
+        return 2
     print(state.model_dump_json(indent=2) if args.json else format_human(state))
     return 0 if state.failed_step is None else 1
 

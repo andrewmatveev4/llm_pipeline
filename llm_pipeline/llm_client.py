@@ -5,7 +5,7 @@ import time
 import openai
 from dotenv import load_dotenv
 from openai import OpenAI
-from llm_pipeline.errors import LLMAPIError, LLMOutputError
+from llm_pipeline.errors import ConfigError, LLMAPIError, LLMOutputError
 
 logger = logging.getLogger(__name__)
 
